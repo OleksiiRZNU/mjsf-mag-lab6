@@ -1,9 +1,23 @@
 <template>
   <div id="app">
+
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">Tasks</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <router-link to="/todos" class="p-2 text-dark">ToDos</router-link>
+        <router-link to="/about" class="p-2 text-dark">About</router-link>
+      </nav>
+
+      <template v-if="!authenticated">
+        <router-link to="/sign-in" class="btn btn-link">Sign in</router-link>
+        <router-link to="/sign-up" class="btn btn-outline-primary">Sign up</router-link>
+      </template>
+    </div>
+
     <div class="container">
       <div class="row">
         <div class="col">
-          <home/>
+          <router-view></router-view>
         </div>
       </div>
     </div>
@@ -11,14 +25,25 @@
 </template>
 
 <script>
-import Home from "./views/home/Home";
+import Vue from 'vue';
+import {RouterView} from "vue-router";
+import state from "@/state";
 
-export default {
+
+export default Vue.extend({
   name: 'App',
   components: {
-     Home
+    RouterView
+  },
+  data() {
+    return {
+      authenticated: state.authorized
+    }
+  },
+  mounted() {
+    state.$on('authorized', () => this.authenticated = true);
   }
-}
+});
 </script>
 
 <style>
@@ -26,4 +51,5 @@ export default {
 #app{
   display: block;
 }
+
 </style>

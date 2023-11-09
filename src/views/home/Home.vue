@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center">
-      <img src="../../assets/logo.png">
-    </div>
     <to-do/>
   </div>
 </template>
