@@ -3,6 +3,7 @@ import App from './App.vue'
 import {prepareTodo} from "@/plugins/todo.plugin.js";
 import router from "@/router";
 import VueRouter from "vue-router";
+import store from "@/store";
 
 // Import the functions you need from the SDKs you need
 import firebase from "firebase/compat";
@@ -33,7 +34,9 @@ Vue.use(VueRouter);
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')
 
 console.log(router);
+console.log(store);

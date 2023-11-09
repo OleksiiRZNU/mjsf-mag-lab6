@@ -3,6 +3,7 @@ import Vue from 'vue'
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import router from "@/router";
 import state from "@/state";
+import { mapState, mapActions } from 'vuex'
 
 export default Vue.extend({
   name: "VerifyEmail",
@@ -13,6 +14,7 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapActions(['loginUser', 'logoutUser']),
     resend() {
       const user = getAuth(this.$firebase).currentUser;
       sendEmailVerification(user);
@@ -24,6 +26,9 @@ export default Vue.extend({
     if (user !== null && typeof user !== "undefined") {
       this.verified = user.emailVerified;
       if (this.verified) {
+        console.log(this.$store);
+        this.loginUser(user);
+
         state.authorized = true;
         state.$emit('authorized');
         router.replace('todos');
@@ -31,6 +36,9 @@ export default Vue.extend({
     } else {
       router.replace('sign-in');
     }
+  },
+  computed: {
+    ...mapState(['user', 'isAuthenticated'])
   }
 })
 </script>

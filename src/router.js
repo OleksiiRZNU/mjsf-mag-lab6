@@ -2,9 +2,9 @@ import VueRouter from 'vue-router'
 import Home from "@/views/home/Home.vue";
 import About from "@/views/home/About.vue";
 import SignIn from "@/views/home/SignIn.vue";
-import state from "@/state";
 import SignUp from "@/views/home/SignUp.vue";
 import VerifyEmail from "@/views/home/VerifyEmail.vue";
+import store from "@/store";
 
 const router = new VueRouter({
     mode: 'history',
@@ -19,7 +19,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const isAuthorized = state.authorized;
+    const isAuthorized = store.state.isAuthenticated;
+
     if ( to.meta.requiresAuth && ! isAuthorized )  {
         return next({ name: 'sign-in' });
     }

@@ -8,9 +8,13 @@
         <router-link to="/about" class="p-2 text-dark">About</router-link>
       </nav>
 
-      <template v-if="!authenticated">
+      <template v-if="!isAuthenticated">
         <router-link to="/sign-in" class="btn btn-link">Sign in</router-link>
         <router-link to="/sign-up" class="btn btn-outline-primary">Sign up</router-link>
+      </template>
+      <template v-else>
+        <span class="btn btn-link">{{ user.email }}</span>
+        <a href="javascript:" class="btn btn-outline-primary" @click="logout">Logout</a>
       </template>
     </div>
 
@@ -28,6 +32,8 @@
 import Vue from 'vue';
 import {RouterView} from "vue-router";
 import state from "@/state";
+import { mapState, mapActions } from 'vuex'
+
 
 
 export default Vue.extend({
@@ -42,6 +48,16 @@ export default Vue.extend({
   },
   mounted() {
     state.$on('authorized', () => this.authenticated = true);
+  },
+  computed: {
+    ...mapState(['user', 'isAuthenticated'])
+  },
+  methods: {
+    ...mapActions(['loginUser', 'logoutUser']),
+    logout() {
+      this.logoutUser();
+      this.$router.replace('sign-in');
+    }
   }
 });
 </script>
